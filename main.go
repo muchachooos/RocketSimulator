@@ -6,36 +6,44 @@ import (
 )
 
 type Point struct {
-	x int
-	y int
+	speed int
+	x     int
+	y     int
 }
 
 func main() {
 	c := make(chan string, 1)
+	o := make(chan string, 1)
+
+	firstPoint := Point{speed: 3, x: 1, y: 0}
+	secondPoint := Point{speed: 7, x: 10, y: 0}
+
+	go firstPoint.MovePoint(c)
+	go secondPoint.MovePoint(o)
+
+	go LordOfTime(c, o)
 
 	j := make(chan string, 1)
-
-	firstPoint := Point{x: 0, y: 0}
-
-	go firstPoint.movePoint(c)
-
-	go LordOfTime(c)
-
 	<-j
 }
 
-func LordOfTime(cc chan string) {
+func LordOfTime(cc, oo chan string) {
 	for {
-		cc <- "writeEbala"
+		cc <- "Go"
+		oo <- "Go"
 		time.Sleep(time.Second)
 	}
 }
 
-func (p *Point) movePoint(ccc chan string) {
+func (p *Point) MovePoint(ccc chan string) {
 	for {
 		<-ccc
-		p.x++
-		p.y++
+		p.MotionParameters()
 		fmt.Println(p)
 	}
+}
+
+func (p *Point) MotionParameters() {
+	p.x += p.speed
+	p.y += p.speed
 }
