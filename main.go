@@ -6,17 +6,35 @@ import (
 )
 
 type Point struct {
-	speed int
-	x     int
-	y     int
+	title        string
+	speed        float32
+	acceleration float32
+	maxSpeed     float32
+	x            float32
+	y            float32
 }
 
 func main() {
 	c := make(chan string, 1)
 	o := make(chan string, 1)
 
-	firstPoint := Point{speed: 3, x: 1, y: 0}
-	secondPoint := Point{speed: 7, x: 10, y: 0}
+	firstPoint := Point{
+		title:        "F",
+		speed:        0,
+		acceleration: 3,
+		maxSpeed:     10,
+		x:            0,
+		y:            0,
+	}
+
+	secondPoint := Point{
+		title:        "S",
+		speed:        0,
+		acceleration: 0,
+		maxSpeed:     0,
+		x:            0,
+		y:            0,
+	}
 
 	go firstPoint.MovePoint(c)
 	go secondPoint.MovePoint(o)
@@ -44,6 +62,13 @@ func (p *Point) MovePoint(ccc chan string) {
 }
 
 func (p *Point) MotionParameters() {
+
+	if p.maxSpeed-p.speed < p.acceleration {
+		p.speed = p.maxSpeed
+	} else if p.speed < p.maxSpeed {
+		p.speed += p.acceleration
+	}
+
 	p.x += p.speed
 	p.y += p.speed
 }
