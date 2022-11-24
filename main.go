@@ -65,19 +65,12 @@ func degreesToRadians(deg float32) float32 {
 	return deg * (math.Pi / 180.0)
 }
 
-func radiansToDegrees(rad float32) float32 {
-	return rad * (180.0 / math.Pi)
-}
-
 func (p *Point) MotionX() {
 	if p.maxSpeed-p.speed < p.acceleration {
 		p.speed = p.maxSpeed
 	}
 
-	corInRad := degreesToRadians(p.corner)
-	fmt.Println("corInRad: ", corInRad)
-	cos := math.Cos(float64(corInRad))
-	fmt.Println("cos: ", cos)
+	cos := math.Cos(float64(degreesToRadians(p.corner)))
 
 	p.x += p.speed * float32(cos)
 }
@@ -87,29 +80,7 @@ func (p *Point) MotionY() {
 		p.speed = p.maxSpeed
 	}
 
-	corInRad := degreesToRadians(p.corner)
-	fmt.Println("corInRad: ", corInRad)
-	sin := math.Sin(float64(corInRad))
-	fmt.Println("sin: ", sin)
+	sin := math.Sin(float64(degreesToRadians(p.corner)))
 
 	p.y += p.speed * float32(sin)
 }
-
-//sinInRad := math.Sin(float64(p.corner))
-//fmt.Println("sinInRad: ", sinInRad)
-//sinInDeg := radiansToDegrees(float32(sinInRad))
-//fmt.Println("sinInDeg: ", sinInDeg)
-//sinInDeg := radiansToDegrees(float32(math.Sin(float64(p.corner))))
-
-//p.y += p.speed * sinInDeg
-
-//func (p *Point) MotionParameters() {
-//	if p.maxSpeed-p.speed < p.acceleration {
-//		p.speed = p.maxSpeed
-//	} else if p.speed < p.maxSpeed {
-//		p.speed += p.acceleration
-//	}
-//
-//	p.x += p.speed
-//	p.y += p.speed
-//}
