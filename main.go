@@ -25,18 +25,18 @@ func main() {
 		title:        "Fir",
 		corner:       70,
 		speed:        0,
-		acceleration: 6,
-		maxSpeed:     287,
+		acceleration: 5,
+		maxSpeed:     43,
 		x:            0,
 		y:            0,
 	}
 
 	secondPoint := Point{
 		title:        "Sec",
-		corner:       54,
+		corner:       39,
 		speed:        0,
-		acceleration: 4,
-		maxSpeed:     199,
+		acceleration: 3,
+		maxSpeed:     32,
 		x:            0,
 		y:            0,
 	}
@@ -70,6 +70,10 @@ func (p *Point) MovePoint(channel chan string) {
 }
 
 func (p *Point) IncreaseSpeed() {
+	if p.maxSpeed-p.speed < p.acceleration {
+		p.speed = p.maxSpeed
+	}
+
 	if p.speed < p.maxSpeed {
 		p.speed += p.acceleration
 	}
@@ -80,21 +84,13 @@ func degreesToRadians(deg float32) float32 {
 }
 
 func (p *Point) MotionX() {
-	if p.maxSpeed-p.speed < p.acceleration {
-		p.speed = p.maxSpeed
-	}
-
-	cos := math.Cos(float64(degreesToRadians(p.corner)))
+	cos := math.Cos(float64(degreesToRadians(p.corner))) //Перводим угол в радианы и высчитываем косинус
 
 	p.x += p.speed * float32(cos)
 }
 
 func (p *Point) MotionY() {
-	if p.maxSpeed-p.speed < p.acceleration {
-		p.speed = p.maxSpeed
-	}
-
-	sin := math.Sin(float64(degreesToRadians(p.corner)))
+	sin := math.Sin(float64(degreesToRadians(p.corner))) //Перводим угол в радианы и высчитываем синус
 
 	p.y += p.speed * float32(sin)
 }
