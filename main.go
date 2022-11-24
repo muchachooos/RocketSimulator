@@ -17,10 +17,12 @@ type Point struct {
 }
 
 func main() {
-	c := make(chan string, 1)
+	chanOne := make(chan string, 1)
+
+	chanTwo := make(chan string, 1)
 
 	firstPoint := Point{
-		title:        "F",
+		title:        "Fir",
 		corner:       70,
 		speed:        0,
 		acceleration: 6,
@@ -29,29 +31,41 @@ func main() {
 		y:            0,
 	}
 
-	go firstPoint.MovePoint(c)
+	secondPoint := Point{
+		title:        "Sec",
+		corner:       54,
+		speed:        0,
+		acceleration: 4,
+		maxSpeed:     199,
+		x:            0,
+		y:            0,
+	}
 
-	go LordOfTime(c)
+	go firstPoint.MovePoint(chanOne)
+
+	go secondPoint.MovePoint(chanTwo)
+
+	go LordOfTime(chanOne, chanTwo)
 
 	j := make(chan string, 1)
 	<-j
 }
 
-func LordOfTime(cc chan string) {
+func LordOfTime(chanOne, chanTwo chan string) {
 	for {
-		cc <- "Go"
+		chanOne <- "Go"
+		chanTwo <- "Go"
 		time.Sleep(time.Second)
 	}
 }
 
-func (p *Point) MovePoint(ccc chan string) {
+func (p *Point) MovePoint(channel chan string) {
 	for {
-		<-ccc
+		<-channel
 		p.IncreaseSpeed()
-
 		p.MotionX()
 		p.MotionY()
-		fmt.Println(" c:", p.corner, " accel:", p.acceleration, " maxS:", p.maxSpeed, " speed:", p.speed, " X:", p.x, " Y:", p.y)
+		fmt.Println(p.title, " c:", p.corner, " accel:", p.acceleration, " maxS:", p.maxSpeed, " speed:", p.speed, " X:", p.x, " Y:", p.y)
 	}
 }
 
