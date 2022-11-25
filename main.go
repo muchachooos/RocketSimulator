@@ -9,6 +9,7 @@ import (
 type Point struct {
 	title        string
 	corner       float32
+	changCorner  float32
 	speed        float32
 	acceleration float32
 	maxSpeed     float32
@@ -23,7 +24,8 @@ func main() {
 
 	firstPoint := Point{
 		title:        "Fir",
-		corner:       70,
+		corner:       90,
+		changCorner:  -15,
 		speed:        0,
 		acceleration: 5,
 		maxSpeed:     43,
@@ -34,6 +36,7 @@ func main() {
 	secondPoint := Point{
 		title:        "Sec",
 		corner:       39,
+		changCorner:  3,
 		speed:        0,
 		acceleration: 3,
 		maxSpeed:     32,
@@ -54,7 +57,7 @@ func main() {
 func LordOfTime(chanOne, chanTwo chan string) {
 	for {
 		chanOne <- "Go"
-		chanTwo <- "Go"
+		//chanTwo <- "Go"
 		time.Sleep(time.Second)
 	}
 }
@@ -63,6 +66,7 @@ func (p *Point) MovePoint(channel chan string) {
 	for {
 		<-channel
 		p.IncreaseSpeed()
+		p.ChangingCorner()
 		p.MotionX()
 		p.MotionY()
 		fmt.Println(p.title, " c:", p.corner, " accel:", p.acceleration, " maxS:", p.maxSpeed, " speed:", p.speed, " X:", p.x, " Y:", p.y)
@@ -77,6 +81,10 @@ func (p *Point) IncreaseSpeed() {
 	if p.speed < p.maxSpeed {
 		p.speed += p.acceleration
 	}
+}
+
+func (p *Point) ChangingCorner() {
+	p.corner = p.corner + p.changCorner
 }
 
 func degreesToRadians(deg float32) float32 {
