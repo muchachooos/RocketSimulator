@@ -25,7 +25,7 @@ func main() {
 	firstPoint := Point{
 		title:        "Fir",
 		corner:       90,
-		changCorner:  -15,
+		changCorner:  15,
 		speed:        0,
 		acceleration: 5,
 		maxSpeed:     43,
@@ -54,10 +54,11 @@ func main() {
 	<-j
 }
 
-func LordOfTime(chanOne, chanTwo chan string) {
+func LordOfTime(channel ...chan string) {
 	for {
-		chanOne <- "Go"
-		//chanTwo <- "Go"
+		for i := range channel {
+			channel[i] <- "Go"
+		}
 		time.Sleep(time.Second)
 	}
 }
