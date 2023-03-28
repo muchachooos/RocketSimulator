@@ -32,7 +32,7 @@ func NewPoint(title string, corner, changCorner, speed, acceleration, maxSpeed, 
 func (p *point) MovePoint(channel chan struct{}) {
 	for {
 		<-channel
-		p.increaseSpeed()
+		p.speedIncrease()
 		p.changingCorner()
 		p.motionX()
 		p.motionY()
@@ -40,7 +40,7 @@ func (p *point) MovePoint(channel chan struct{}) {
 	}
 }
 
-func (p *point) increaseSpeed() {
+func (p *point) speedIncrease() {
 	if p.maxSpeed-p.speed < p.acceleration {
 		p.speed = p.maxSpeed
 	}

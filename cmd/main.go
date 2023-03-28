@@ -1,6 +1,9 @@
 package main
 
-import "RocketSimulator/point"
+import (
+	"RocketSimulator/lordOfTime"
+	"RocketSimulator/point"
+)
 
 func main() {
 	chanOne := make(chan struct{}, 1)
@@ -15,8 +18,8 @@ func main() {
 
 	go secondPoint.MovePoint(chanTwo)
 
-	go LordOfTime(chanOne, chanTwo)
+	go lordOfTime.LordOfTime(chanOne, chanTwo)
 
-	j := make(chan string, 1)
+	j := make(chan struct{}, 1)
 	<-j
 }
